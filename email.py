@@ -1,3 +1,4 @@
+//halik app python file
 from flask import Flask, render_template_string, request
 import smtplib
 from email.message import EmailMessage
@@ -42,6 +43,20 @@ def send_mail():
 
 if _name_ == '_main_':
     app.run(debug=True)
+//index.html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Send Email</title>
+</head>
+<body>
+    <h1>Send Email</h1>
+    <form action="/webapp" method="post">
+        <button type="submit">Send Email</button>
+    </form>
+</body>
+</html>
+
 
     ------------------------------------------------------------------------------------
 
@@ -91,3 +106,59 @@ sentiment_score = sia.polarity_scores(newsletter_text)
 print("Top Keywords:", top_keywords)
 print("Total Sentences:", len(sentences))
 print("Sentiment Analysis:", sentiment_score)
+
+
+//new php file
+<?php
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require 'PHPMailer/src/PHPMailer.php';
+require 'PHPMailer/src/Exception.php';
+require 'PHPMailer/src/SMTP.php';
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $name    = $_POST['name'];
+    $email   = $_POST['email'];
+    $message = $_POST['message'];
+
+    $mail = new PHPMailer(true);
+
+    try {
+        $mail->isSMTP();
+        $mail->Host       = 'smtp.gmail.com';
+        $mail->SMTPAuth   = true;
+        $mail->Username   = 'ajaymg137@gmail.com';        
+        $mail->Password   = 'vreq wyom lexl bfuw';            
+        $mail->SMTPSecure = 'tls';
+        $mail->Port       = 587;
+
+        $mail->setFrom('ajaymg137@gmail.com', 'Contact');  
+        $mail->addAddress('sam9ple@gmail.com');         
+
+        $mail->Subject = "New message from $name";
+        $mail->Body    = "Name: $name\nEmail: $email\nMessage:\n$message";
+
+        $mail->send();
+        echo "✅ Message Sent!";
+    } catch (Exception $e) {
+        echo "❌ Failed to send email. Error: {$mail->ErrorInfo}";
+    }
+}
+?>
+//form html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Email Form</title>
+</head>
+<body>
+    <h2>Send Email</h2>
+    <form action="send_email.php" method="post">
+        <input type="text" name="name" placeholder="Your Name" required><br><br>
+        <input type="email" name="email" placeholder="Your Email" required><br><br>
+        <textarea name="message" placeholder="Your Message" required></textarea><br><br>
+        <button type="submit">Send</button>
+    </form>
+</body>
+</html>
