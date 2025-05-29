@@ -1,47 +1,32 @@
 //halik app python file
-from flask import Flask, render_template_string, request
+from flask import Flask, render_template, request
 import smtplib
 from email.message import EmailMessage
 
-app = Flask(_name_)
-
-HTML_CODE = '''
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Send Mail</title>
-</head>
-<body>
-  <h2>Click the button to send an email</h2>
-  <form action="/send-mail" method="post">
-    <button type="submit">Send Email</button>
-  </form>
-</body>
-</html>
-'''
+app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template_string(HTML_CODE)
+    return render_template('index.html')
 
-@app.route('/send-mail', methods=['POST'])
-def send_mail():
+@app.route('/webapp', methods=['POST'])
+def send_email():
+    # Email details
     msg = EmailMessage()
-    msg.set_content("This is a test email sent from Python Flask.")
-    msg['Subject'] = "Test Email"
-    msg['From'] = "your@gmail.com"
-    msg['To'] = "your@gmail.com"
+    msg['Subject'] = 'Hello from Flask App'
+    msg['From'] = 'kajamydeenhalik@gmail.com'
+    msg['To'] = 'nayaganavis2004@gmail.com'
+    msg.set_content('This email was sent by clicking a button!')
 
-    # Send the email using SMTP (e.g., Gmail)
-    try:
-        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
-            smtp.login("yourgmail.com", "usdjotzvpqfkvqpk")
-            smtp.send_message(msg)
-        return "Email sent successfully!"
-    except Exception as e:
-        return f"Error: {e}"
+    # Send via Gmail SMTP
+    with smtplib.SMTP('smtp.gmail.com', 587) as smtp:
+        smtp.starttls()
+        smtp.login('kajamydeenhalik@gmail.com', 'aufgjvzqbqmspfnd')  # use your App Password
+        smtp.send_message(msg)
 
-if _name_ == '_main_':
+    return "Email sent successfully!"
+
+if __name__ == '__main__':
     app.run(debug=True)
 //index.html
 <!DOCTYPE html>
